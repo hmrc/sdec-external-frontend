@@ -37,8 +37,8 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CheckYourAnswersView]
-        val list = SummaryListViewModel(Seq.empty)
+        application.injector.instanceOf[CheckYourAnswersView]
+        SummaryListViewModel(Seq.empty)
 
         status(result) mustEqual OK
       }

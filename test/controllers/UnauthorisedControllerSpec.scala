@@ -36,7 +36,7 @@ class UnauthorisedControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[UnauthorisedView]
+        application.injector.instanceOf[UnauthorisedView]
 
         status(result) mustEqual OK
       }

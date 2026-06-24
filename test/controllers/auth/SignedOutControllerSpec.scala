@@ -34,7 +34,7 @@ class SignedOutControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SignedOutView]
+        application.injector.instanceOf[SignedOutView]
 
         status(result) mustEqual OK
       }
