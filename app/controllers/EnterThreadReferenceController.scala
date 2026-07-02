@@ -16,26 +16,32 @@
 
 package controllers
 
-import config.FrontendAppConfig
 import controllers.actions.IdentifierAction
-import play.api.Logging
+import forms.ThreadReferenceFormProvider
+import models.Mode
+import models.sdec.ThreadReference
+import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.EnterThreadReferenceView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
-class IndexController @Inject() (
-    val controllerComponents: MessagesControllerComponents,
-    val authConnector: AuthConnector,
-    identity: IdentifierAction
-)(using appConfig: FrontendAppConfig, ec: ExecutionContext)
-    extends FrontendBaseController
-    with I18nSupport
-    with Logging {
 
-  def onPageLoad: Action[AnyContent] = identity { _ =>
-    Redirect(routes.EnterThreadReferenceController.onPageLoad())
+class EnterThreadReferenceController @Inject() (
+    val controllerComponents: MessagesControllerComponents,
+    identify: IdentifierAction,
+    view: EnterThreadReferenceView,
+    formProvider: ThreadReferenceFormProvider
+) extends FrontendBaseController
+    with I18nSupport {
+  val form: Form[ThreadReference] = formProvider()
+
+  def onPageLoad(mode: Mode): Action[AnyContent] = identify { implicit request =>
+    Ok(view(mode))
+  }
+
+  def onContinue(mode: Mode): Action[AnyContent] = identify { implicit request =>
+    Ok(view(mode))
   }
 }
