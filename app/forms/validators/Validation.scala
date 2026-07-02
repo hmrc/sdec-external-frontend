@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
-package models.sdec
+package forms.validators
 
-case class ThreadReference(threadReference: String)
+object Validation {
+
+  final val ThreadReferenceRegex: String = """^[A-Z0-9]{12}$"""
+}

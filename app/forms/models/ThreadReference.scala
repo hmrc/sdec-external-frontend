@@ -14,29 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.models
 
-import forms.mappings.ThreadReferenceMapping
-import models.sdec.ThreadReference
 import play.api.data.Form
-import play.api.data.Forms.mapping
+import play.api.data.Forms.{mapping, text}
 
-import javax.inject.Inject
+case class ThreadReference(reference: String)
 
-class ThreadReferenceFormProvider @Inject() extends ThreadReferenceMapping {
+object ThreadReference {
 
-  def apply(): Form[ThreadReference] = Form(
+  val form: Form[ThreadReference] = Form(
     mapping(
-      "threadReference" ->
-        text("sdec.landingpage.error.enterref")
-          .verifying(
-            firstError(
-              regexp(
-                Validation.ThreadReferenceRegex,
-                "sdec.landingpage.error.threadref.help"
-              )
-            )
-          )
-    )(ThreadReference.apply)(threadRef => Some(threadRef.threadReference))
+      "thread-reference" -> text
+    )(ThreadReference.apply)(t => Some(t.reference))
   )
 }

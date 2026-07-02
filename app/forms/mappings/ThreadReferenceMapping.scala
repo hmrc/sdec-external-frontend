@@ -16,7 +16,7 @@
 
 package forms.mappings
 
-import forms.Validation
+import forms.validators.Validation
 
 trait ThreadReferenceMapping extends Mappings {
 

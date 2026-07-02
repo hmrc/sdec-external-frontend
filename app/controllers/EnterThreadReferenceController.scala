@@ -17,31 +17,70 @@
 package controllers
 
 import controllers.actions.IdentifierAction
-import forms.ThreadReferenceFormProvider
+import forms.models.ThreadReference
+import forms.providers.ThreadReferenceFormProvider
 import models.Mode
-import models.sdec.ThreadReference
 import play.api.data.Form
-import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.i18n.{I18nSupport, Messages}
+import play.api.mvc.*
+import play.api.{Logger, Logging}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.EnterThreadReferenceView
+import views.html.{EnterThreadReferenceView, ThreadReferenceView}
 
 import javax.inject.Inject
 
 class EnterThreadReferenceController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     identify: IdentifierAction,
-    view: EnterThreadReferenceView,
-    formProvider: ThreadReferenceFormProvider
+    enterThreadReferenceView: EnterThreadReferenceView,
+    formProvider: ThreadReferenceFormProvider,
+    threadReferenceView: ThreadReferenceView
 ) extends FrontendBaseController
-    with I18nSupport {
-  val form: Form[ThreadReference] = formProvider()
+    with I18nSupport
+    with Logging {
+  private val logger              = Logger(getClass)
+  val form: Form[ThreadReference] = ThreadReference.form
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = identify { implicit request =>
-    Ok(view(mode))
+  def onPageLoad(
+      mode: Mode,
+      form: Form[ThreadReference] = form
+  ): Action[AnyContent] = identify { implicit request =>
+    val hasErrors = form.hasErrors
+    logger.info(s"onPageLoad: HasErrors: $hasErrors, Loading page with $form")
+    Ok(enterThreadReferenceView(form, mode))
   }
 
   def onContinue(mode: Mode): Action[AnyContent] = identify { implicit request =>
-    Ok(view(mode))
+    val formData: Form[ThreadReference] = ThreadReference.form.bindFromRequest()
+    val threadReference: Option[ThreadReference] = formData.value
+    val hasErrors                                = formData.hasErrors
+    logger.info(
+      s"onContinue: HasErrors: $hasErrors, TR: $threadReference, FormData: $formData"
+    )
+    validateThreadReference(threadReference)
+      .fold(returnBadRequest(formData, mode))(t => Ok(threadReferenceView(mode, t)))
+  }
+
+  private def returnBadRequest(form: Form[ThreadReference], mode: Mode)(using
+      request: Request[?]
+  ): Result = {
+    val formWithError =
+      form.withGlobalError(Messages("sdec.landingpage.error.problem.message"))
+    logger.info(s"returnBadRequests: Form has errors: $formWithError")
+    BadRequest(enterThreadReferenceView(formWithError, mode))
+  }
+
+  private def validateThreadReference(
+      tr: Option[ThreadReference]
+  ): Option[ThreadReference] = {
+    tr match {
+      case Some(value) =>
+        if (formProvider.validateThreadReference(value.reference)) {
+          tr
+        } else {
+          None
+        }
+      case None => None
+    }
   }
 }

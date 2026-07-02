@@ -50,6 +50,9 @@ sdec.page.heading = Share Files Securely with HMRC
 sdec.landingpage.thread.enterref = Enter the thread reference number
 sdec.landingpage.thread.help = This can be found in the email you received from HMRC, for example HDJ2123F
 sdec.landingpage.error.enterref = Enter the thread reference number
-sdec.landingpage.error.threadref.help = The thread reference is 12 characters containing A - Z and 0 - 9 only
-sdec.landingpage.error.problem = There is a problem
+sdec.landingpage.error.threadref.help = The thread reference contains 12 characters using A - Z and 0 - 9 only
+sdec.landingpage.error.problem =
+sdec.landingpage.error.problem.message = There is a problem with the thread reference number you entered
+
+sdec.threadinfopage.theadref = Thread Reference
 
