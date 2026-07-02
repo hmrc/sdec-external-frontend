@@ -1,4 +1,4 @@
-service.name = sdec-external-frontend
+service.name = Share Files Securely with HMRC
 
 site.back = Back
 site.remove = Remove
@@ -27,10 +27,6 @@ error.title.prefix = Error:
 error.prefix = Error
 error.summary.title = There is a problem
 
-index.title = sdec-external-frontend
-index.heading = sdec-external-frontend
-index.guidance = Welcome to your new frontend. Please see the README file for a guide to getting started.
-
 checkYourAnswers.title = Check your answers
 checkYourAnswers.heading = Check your answers
 
@@ -47,3 +43,16 @@ signedOut.guidance = We did not save your answers.
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+sdec.button.continue = Continue
+sdec.page.title = Share Files Securely with HMRC
+sdec.page.heading = Share Files Securely with HMRC
+sdec.landingpage.thread.enterref = Enter the thread reference number
+sdec.landingpage.thread.help = This can be found in the email you received from HMRC, for example HDJ2123F
+sdec.landingpage.error.enterref = Enter the thread reference number
+sdec.landingpage.error.threadref.help = The thread reference contains 12 characters using A - Z and 0 - 9 only
+sdec.landingpage.error.problem =
+sdec.landingpage.error.problem.message = There is a problem with the thread reference number you entered
+
+sdec.threadinfopage.theadref = Thread Reference
+

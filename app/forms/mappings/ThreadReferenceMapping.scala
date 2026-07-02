@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package forms.mappings
 
-import com.google.inject.Inject
-import config.FrontendAppConfig
-import play.api.i18n.Lang
-import play.api.mvc.*
-import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
+import forms.validators.Validation
 
-class LanguageSwitchController @Inject() (
-    appConfig: FrontendAppConfig,
-    languageUtils: LanguageUtils,
-    cc: ControllerComponents
-) extends LanguageController(languageUtils, cc) {
+trait ThreadReferenceMapping extends Mappings {
 
-  override def fallbackURL: String =
-    routes.EnterThreadReferenceController.onPageLoad().url
-
-  override def languageMap: Map[String, Lang] = appConfig.languageMap
+  def validateThreadReference(threadReferenceNumber: String): Boolean =
+    threadReferenceNumber.matches(Validation.ThreadReferenceRegex)
 }

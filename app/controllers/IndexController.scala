@@ -16,22 +16,26 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import controllers.actions.IdentifierAction
+import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.IndexView
 
 import javax.inject.Inject
-
+import scala.concurrent.ExecutionContext
 class IndexController @Inject() (
     val controllerComponents: MessagesControllerComponents,
-    identify: IdentifierAction,
-    view: IndexView
-) extends FrontendBaseController
-    with I18nSupport {
+    val authConnector: AuthConnector,
+    identity: IdentifierAction
+)(using appConfig: FrontendAppConfig, ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport
+    with Logging {
 
-  def onPageLoad(): Action[AnyContent] = identify { implicit request =>
-    Ok(view())
+  def onPageLoad: Action[AnyContent] = identity { _ =>
+    Redirect(routes.EnterThreadReferenceController.onPageLoad())
   }
 }

@@ -19,22 +19,23 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.IndexView
+import views.html.EnterThreadReferenceView
 
-class IndexControllerSpec extends SpecBase {
+class EnterThreadReferenceControllerSpec extends SpecBase {
 
-  "Index Controller" - {
+  "EnterThreadReferenceController Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
+        val request =
+          FakeRequest(GET, routes.EnterThreadReferenceController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        application.injector.instanceOf[IndexView]
+        application.injector.instanceOf[EnterThreadReferenceView]
 
         status(result) mustEqual OK
       }
