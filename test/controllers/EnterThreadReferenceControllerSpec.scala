@@ -17,27 +17,164 @@
 package controllers
 
 import base.SpecBase
+import forms.providers.ThreadReferenceFormProvider
+import org.jsoup.Jsoup
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.EnterThreadReferenceView
 
 class EnterThreadReferenceControllerSpec extends SpecBase {
 
-  "EnterThreadReferenceController Controller" - {
+  "EnterThreadReferenceController" - {
 
-    "must return OK and the correct view for a GET" in {
+    "onPageLoad" - {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      "must return OK" in {
 
-      running(application) {
-        val request =
-          FakeRequest(GET, routes.EnterThreadReferenceController.onPageLoad().url)
+        val application = applicationBuilder().build()
 
-        val result = route(application, request).value
+        running(application) {
 
-        application.injector.instanceOf[EnterThreadReferenceView]
+          val request =
+            FakeRequest(
+              GET,
+              routes.EnterThreadReferenceController
+                .onPageLoad()
+                .url
+            )
 
-        status(result) mustEqual OK
+          val result = route(application, request).value
+
+          status(result) mustBe OK
+        }
+      }
+
+      "must render the correct view" in {
+
+        val application = applicationBuilder().build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              GET,
+              routes.EnterThreadReferenceController
+                .onPageLoad()
+                .url
+            )
+
+          val result = route(application, request).value
+
+          application.injector.instanceOf[EnterThreadReferenceView]
+
+          application.injector
+            .instanceOf[ThreadReferenceFormProvider]
+            .apply()
+
+          val document = Jsoup.parse(contentAsString(result))
+
+          status(result) mustBe OK
+
+          document.title() mustBe "Share Files Securely with HMRC - Share Files Securely with HMRC - GOV.UK"
+
+          document.select("h1").text() mustBe "Enter the thread reference number"
+
+          document.select("input[name=thread-reference]").size() mustBe 1
+        }
+      }
+    }
+
+    "onContinue" - {
+
+      "must return BAD_REQUEST when the form is empty" in {
+
+        val application = applicationBuilder().build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              POST,
+              routes.EnterThreadReferenceController
+                .onContinue()
+                .url
+            ).withFormUrlEncodedBody(
+              "reference-number" -> ""
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustBe BAD_REQUEST
+        }
+      }
+
+      "must return OK when a valid thread reference is submitted" in {
+
+        val application =
+          applicationBuilder()
+            .overrides(
+              bind[ThreadReferenceFormProvider]
+                .toInstance(new ThreadReferenceFormProvider {
+                  override def validateThreadReference(
+                      reference: String
+                  ): Boolean = true
+                })
+            )
+            .build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              POST,
+              routes.EnterThreadReferenceController
+                .onContinue()
+                .url
+            ).withFormUrlEncodedBody(
+              "reference-number" -> "ABC123DEF456"
+            )
+
+          val result = route(application, request).value
+
+          val document = Jsoup.parse(contentAsString(result))
+
+          println(document.toString)
+
+          status(result) mustBe OK
+        }
+      }
+
+      "must return BAD_REQUEST when business validation fails" in {
+
+        val application =
+          applicationBuilder()
+            .overrides(
+              bind[ThreadReferenceFormProvider]
+                .toInstance(new ThreadReferenceFormProvider {
+                  override def validateThreadReference(
+                      reference: String
+                  ): Boolean = false
+                })
+            )
+            .build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              POST,
+              routes.EnterThreadReferenceController
+                .onContinue()
+                .url
+            ).withFormUrlEncodedBody(
+              "reference-number" -> "ABC123DEF456"
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustBe BAD_REQUEST
+        }
       }
     }
   }
