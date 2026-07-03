@@ -100,7 +100,7 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
                 .onContinue()
                 .url
             ).withFormUrlEncodedBody(
-              "reference-number" -> ""
+              "thread-reference" -> ""
             )
 
           val result = route(application, request).value
@@ -132,7 +132,7 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
                 .onContinue()
                 .url
             ).withFormUrlEncodedBody(
-              "reference-number" -> "ABC123DEF456"
+              "thread-reference" -> "ABC123DEF456"
             )
 
           val result = route(application, request).value
@@ -168,7 +168,7 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
                 .onContinue()
                 .url
             ).withFormUrlEncodedBody(
-              "reference-number" -> "ABC123DEF456"
+              "thread-reference" -> "ABC123DEF456"
             )
 
           val result = route(application, request).value

@@ -28,7 +28,7 @@ class ThreadReferenceFormProvider @Inject() extends ThreadReferenceMapping {
 
   def apply(): Form[ThreadReference] = Form(
     mapping(
-      "reference-number" ->
+      "thread-reference" ->
         text("sdec.landingpage.error.enterref")
           .verifying(
             firstError(

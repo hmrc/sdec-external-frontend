@@ -29,7 +29,7 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
     "bind a valid thread reference" in {
 
       val result = form.bind(
-        Map("reference-number" -> "ABC123DEF456")
+        Map("thread-reference" -> "ABC123DEF456")
       )
 
       result.errors mustBe empty
@@ -39,12 +39,12 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
     "require a value" in {
 
       val result = form.bind(
-        Map("reference-number" -> "")
+        Map("thread-reference" -> "")
       )
 
       result.errors must contain only
         FormError(
-          "reference-number",
+          "thread-reference",
           "sdec.landingpage.error.enterref"
         )
     }
@@ -52,12 +52,12 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
     "reject lowercase characters" in {
 
       val result = form.bind(
-        Map("reference-number" -> "abc123DEF456")
+        Map("thread-reference" -> "abc123DEF456")
       )
 
       result.errors must contain
       FormError(
-        "reference-number",
+        "thread-reference",
         "sdec.landingpage.error.threadref.help"
       )
     }
@@ -65,12 +65,12 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
     "reject special characters" in {
 
       val result = form.bind(
-        Map("reference-number" -> "ABC123DEF45!")
+        Map("thread-reference" -> "ABC123DEF45!")
       )
 
       result.errors must contain
       FormError(
-        "reference-number",
+        "thread-reference",
         "sdec.landingpage.error.threadref.help"
       )
     }
@@ -78,12 +78,12 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
     "reject values that are too short" in {
 
       val result = form.bind(
-        Map("reference-number" -> "ABC123")
+        Map("thread-reference" -> "ABC123")
       )
 
       result.errors must contain
       FormError(
-        "reference-number",
+        "thread-reference",
         "sdec.landingpage.error.threadref.help"
       )
     }
@@ -91,12 +91,12 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
     "reject values that are too long" in {
 
       val result = form.bind(
-        Map("reference-number" -> "ABC123DEF4567")
+        Map("thread-reference" -> "ABC123DEF4567")
       )
 
       result.errors must contain
       FormError(
-        "reference-number",
+        "thread-reference",
         "sdec.landingpage.error.threadref.help"
       )
     }
