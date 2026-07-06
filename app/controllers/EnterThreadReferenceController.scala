@@ -63,15 +63,6 @@ class EnterThreadReferenceController @Inject() (
 
   private def validateThreadReference(
       tr: Option[ThreadReference]
-  ): Option[ThreadReference] = {
-    tr match {
-      case Some(value) =>
-        if (formProvider.validateThreadReference(value.reference)) {
-          tr
-        } else {
-          None
-        }
-      case None => None
-    }
-  }
+  ): Option[ThreadReference] =
+    tr.filter(t => formProvider.validateThreadReference(t.reference))
 }
