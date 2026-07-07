@@ -47,12 +47,13 @@ unauthorised.heading = You can’t access this service with this account
 sdec.button.continue = Continue
 sdec.page.title = Share Files Securely with HMRC
 sdec.page.heading = Share Files Securely with HMRC
-sdec.landingpage.thread.enterref = Enter the thread reference number
-sdec.landingpage.thread.help = This can be found in the email you received from HMRC, for example HDJ2123F
-sdec.landingpage.error.enterref = Enter the thread reference number
-sdec.landingpage.error.threadref.help = The thread reference contains 12 characters using A - Z and 0 - 9 only
-sdec.landingpage.error.problem =
-sdec.landingpage.error.problem.message = There is a problem with the thread reference number you entered
+sdec.index.guidance = What do you want to do?
+sdec.index.enterthread = Enter Thread Reference Number
+sdec.enterthreadref.thread.enterref = Enter the thread reference number
+sdec.enterthreadref.thread.help = This can be found in the email you received from HMRC, for example HDJ2123F
+sdec.enterthreadref.error.enterref = Enter the thread reference number
+sdec.enterthreadref.error.threadref.help = The thread reference contains 12 characters using A - Z and 0 - 9 only
+sdec.enterthreadref.error.problem.message = There is a problem with the thread reference number you entered
 
 sdec.threadinfopage.theadref = Thread Reference
 

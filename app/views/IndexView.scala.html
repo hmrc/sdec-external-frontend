@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package controllers
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
-import base.SpecBase
-import play.api.test.*
-import play.api.test.Helpers.*
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
 
-class IndexControllerSpec extends SpecBase {
+@()(implicit request: Request[_], messages: Messages)
 
-  "must return OK and the correct view for a GET" in {
+@layout(
+    pageTitle = titleNoForm(messages("index.title")),
+    showBackLink = false
+) {
 
-    val application = applicationBuilder(userAnswers = None).build()
+    <h1 class="govuk-heading-l">@messages("sdec.page.heading")</h1>
 
-    running(application) {
-      val request = FakeRequest(GET, routes.IndexController.onPageLoad().url)
-
-      val result = route(application, request).value
-
-      status(result) mustEqual OK
-    }
-  }
+    @govukButton(Button(
+        href = Some("/sdec/thread-reference"),
+        content = Text(messages("sdec.index.enterthread"))
+    ))
 }

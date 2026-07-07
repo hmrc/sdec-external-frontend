@@ -42,7 +42,7 @@
 
         @govukFieldset(Fieldset(
             legend = Some(Legend(
-                content = Text(messages("sdec.landingpage.thread.enterref")),
+                content = Text(messages("sdec.enterthreadref.thread.enterref")),
                 classes = "govuk-fieldset__legend--l",
                 isPageHeading = true
             ))
@@ -54,15 +54,15 @@
                 name = "thread-reference",
                 value = form("thread-reference").value,
                 classes = "govuk-!-width-two-thirds",
-                label = LabelViewModel(messages("sdec.landingpage.thread.help")),
-                errorMessage = Some(ErrorMessage(content = Text(messages("sdec.landingpage.error.threadref.help"))))
+                label = LabelViewModel(messages("sdec.enterthreadref.thread.help")),
+                errorMessage = Some(ErrorMessage(content = Text(messages("sdec.enterthreadref.error.threadref.help"))))
             )
             )
         } else {
             @govukInput(
                 InputViewModel(
                     field = form("thread-reference"),
-                    label = LabelViewModel(messages("sdec.landingpage.thread.help"))
+                    label = LabelViewModel(messages("sdec.enterthreadref.thread.help"))
                 )
                 .withWidth(TwoThirds)
             )

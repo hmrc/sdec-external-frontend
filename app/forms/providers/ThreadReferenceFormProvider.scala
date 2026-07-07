@@ -29,12 +29,12 @@ class ThreadReferenceFormProvider @Inject() extends ThreadReferenceMapping {
   def apply(): Form[ThreadReference] = Form(
     mapping(
       "thread-reference" ->
-        text("sdec.landingpage.error.enterref")
+        text("sdec.enterthreadref.error.enterref")
           .verifying(
             firstError(
               regexp(
                 Validation.ThreadReferenceRegex,
-                "sdec.landingpage.error.threadref.help"
+                "sdec.enterthreadref.error.threadref.help"
               )
             )
           )

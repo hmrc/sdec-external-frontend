@@ -57,7 +57,7 @@ class EnterThreadReferenceController @Inject() (
       request: Request[?]
   ): Result = {
     val formWithError =
-      form.withGlobalError(Messages("sdec.landingpage.error.problem.message"))
+      form.withGlobalError(Messages("sdec.enterthreadref.error.problem.message"))
     BadRequest(enterThreadReferenceView(formWithError, mode))
   }
 

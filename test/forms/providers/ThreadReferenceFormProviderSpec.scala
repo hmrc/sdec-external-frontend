@@ -45,7 +45,7 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
       result.errors must contain only
         FormError(
           "thread-reference",
-          "sdec.landingpage.error.enterref"
+          "sdec.enterthreadref.error.enterref"
         )
     }
 
@@ -58,7 +58,7 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
       result.errors must contain
       FormError(
         "thread-reference",
-        "sdec.landingpage.error.threadref.help"
+        "sdec.enterthreadref.error.threadref.help"
       )
     }
 
@@ -71,7 +71,7 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
       result.errors must contain
       FormError(
         "thread-reference",
-        "sdec.landingpage.error.threadref.help"
+        "sdec.enterthreadref.error.threadref.help"
       )
     }
 
@@ -84,7 +84,7 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
       result.errors must contain
       FormError(
         "thread-reference",
-        "sdec.landingpage.error.threadref.help"
+        "sdec.enterthreadref.error.threadref.help"
       )
     }
 
@@ -97,7 +97,7 @@ class ThreadReferenceFormProviderSpec extends SpecBase with FieldBehaviours {
       result.errors must contain
       FormError(
         "thread-reference",
-        "sdec.landingpage.error.threadref.help"
+        "sdec.enterthreadref.error.threadref.help"
       )
     }
   }
