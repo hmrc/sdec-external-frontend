@@ -31,7 +31,7 @@
     <h1 class="govuk-heading-l">@messages("sdec.page.heading")</h1>
 
     @govukButton(Button(
-        href = Some("/sdec/thread-reference"),
+        href = Some(routes.EnterThreadReferenceController.onPageLoad().url),
         content = Text(messages("sdec.index.enterthread"))
     ))
 }
