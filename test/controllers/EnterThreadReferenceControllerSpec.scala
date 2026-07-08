@@ -18,11 +18,17 @@ package controllers
 
 import base.SpecBase
 import forms.providers.ThreadReferenceFormProvider
+import models.{ThreadReference, ThreadStatus}
 import org.jsoup.Jsoup
+import play.api.http.Status
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import service.ThreadReferenceServiceAlgebra
+import uk.gov.hmrc.http.{HeaderCarrier, NotFoundException, UpstreamErrorResponse}
 import views.html.EnterThreadReferenceView
+import java.time.{LocalDate, LocalDateTime}
+import scala.concurrent.{ExecutionContext, Future}
 
 class EnterThreadReferenceControllerSpec extends SpecBase {
 
@@ -110,6 +116,26 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
       }
 
       "must return OK when a valid thread reference is submitted" in {
+        given HeaderCarrier    = HeaderCarrier()
+        given ExecutionContext = ExecutionContext.global
+
+        val threadReference = models.ThreadReference(
+          id = "1",
+          threadReference = "ABC123DEF456",
+          status = ThreadStatus.Active,
+          createdTimeStamp = LocalDateTime.now(),
+          lastUpdatedTimeStamp = LocalDateTime.now(),
+          threadExpiryDate = LocalDate.now(),
+          associatedCaseReference = "CASE123"
+        )
+
+        val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
+          override def checkThreadReference(threadReferenceStr: String)(using
+              hc: HeaderCarrier,
+              ec: ExecutionContext
+          ): Future[ThreadReference] =
+            Future.successful(threadReference)
+        }
 
         val application =
           applicationBuilder()
@@ -119,7 +145,9 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
                   override def validateThreadReference(
                       reference: String
                   ): Boolean = true
-                })
+                }),
+              bind[ThreadReferenceServiceAlgebra]
+                .toInstance(mockThreadReferenceService)
             )
             .build()
 
@@ -137,11 +165,156 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
 
           val result = route(application, request).value
 
-          val document = Jsoup.parse(contentAsString(result))
-
-          println(document.toString)
-
           status(result) mustBe OK
+        }
+      }
+
+      "must return NOTFOUND when a valid thread reference is submitted but backend does not find it in database" in {
+        given HeaderCarrier = HeaderCarrier()
+
+        given ExecutionContext = ExecutionContext.global
+
+        val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
+          override def checkThreadReference(threadReferenceStr: String)(using
+              hc: HeaderCarrier,
+              ec: ExecutionContext
+          ): Future[ThreadReference] =
+            Future.failed(new NotFoundException("not found"))
+        }
+
+        val application =
+          applicationBuilder()
+            .overrides(
+              bind[ThreadReferenceFormProvider]
+                .toInstance(new ThreadReferenceFormProvider {
+                  override def validateThreadReference(
+                      reference: String
+                  ): Boolean = true
+                }),
+              bind[ThreadReferenceServiceAlgebra]
+                .toInstance(mockThreadReferenceService)
+            )
+            .build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              POST,
+              routes.EnterThreadReferenceController
+                .onContinue()
+                .url
+            ).withFormUrlEncodedBody(
+              "thread-reference" -> "ABC123DEF456"
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustBe NOT_FOUND
+        }
+      }
+
+      "must return NOTFOUND when a valid thread reference is submitted but gets an UpstreamErrorResponse" in {
+        given HeaderCarrier = HeaderCarrier()
+
+        given ExecutionContext = ExecutionContext.global
+
+        val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
+          override def checkThreadReference(threadReferenceStr: String)(using
+              hc: HeaderCarrier,
+              ec: ExecutionContext
+          ): Future[ThreadReference] =
+            Future.failed(
+              new UpstreamErrorResponse(
+                "Not found",
+                Status.NOT_FOUND,
+                Status.NOT_FOUND,
+                Map()
+              )
+            )
+        }
+
+        val application =
+          applicationBuilder()
+            .overrides(
+              bind[ThreadReferenceFormProvider]
+                .toInstance(new ThreadReferenceFormProvider {
+                  override def validateThreadReference(
+                      reference: String
+                  ): Boolean = true
+                }),
+              bind[ThreadReferenceServiceAlgebra]
+                .toInstance(mockThreadReferenceService)
+            )
+            .build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              POST,
+              routes.EnterThreadReferenceController
+                .onContinue()
+                .url
+            ).withFormUrlEncodedBody(
+              "thread-reference" -> "ABC123DEF456"
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustBe NOT_FOUND
+        }
+      }
+
+      "must return Server Error when a valid thread reference is submitted but gets an Any other errors" in {
+        given HeaderCarrier = HeaderCarrier()
+
+        given ExecutionContext = ExecutionContext.global
+
+        val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
+          override def checkThreadReference(threadReferenceStr: String)(using
+              hc: HeaderCarrier,
+              ec: ExecutionContext
+          ): Future[ThreadReference] =
+            Future.failed(
+              new UpstreamErrorResponse(
+                "There was a problem",
+                Status.INTERNAL_SERVER_ERROR,
+                Status.INTERNAL_SERVER_ERROR,
+                Map()
+              )
+            )
+        }
+
+        val application =
+          applicationBuilder()
+            .overrides(
+              bind[ThreadReferenceFormProvider]
+                .toInstance(new ThreadReferenceFormProvider {
+                  override def validateThreadReference(
+                      reference: String
+                  ): Boolean = true
+                }),
+              bind[ThreadReferenceServiceAlgebra]
+                .toInstance(mockThreadReferenceService)
+            )
+            .build()
+
+        running(application) {
+
+          val request =
+            FakeRequest(
+              POST,
+              routes.EnterThreadReferenceController
+                .onContinue()
+                .url
+            ).withFormUrlEncodedBody(
+              "thread-reference" -> "ABC123DEF456"
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustBe SERVICE_UNAVAILABLE
         }
       }
 

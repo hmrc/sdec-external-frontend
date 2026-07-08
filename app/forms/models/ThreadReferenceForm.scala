@@ -19,13 +19,13 @@ package forms.models
 import play.api.data.Form
 import play.api.data.Forms.{mapping, text}
 
-case class ThreadReference(reference: String)
+case class ThreadReferenceForm(reference: String)
 
-object ThreadReference {
+object ThreadReferenceForm {
 
-  val form: Form[ThreadReference] = Form(
+  val form: Form[ThreadReferenceForm] = Form(
     mapping(
       "thread-reference" -> text
-    )(ThreadReference.apply)(t => Some(t.reference))
+    )(ThreadReferenceForm.apply)(t => Some(t.reference))
   )
 }

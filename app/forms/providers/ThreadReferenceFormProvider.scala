@@ -17,7 +17,7 @@
 package forms.providers
 
 import forms.mappings.ThreadReferenceMapping
-import forms.models.ThreadReference
+import forms.models.ThreadReferenceForm
 import forms.validators.Validation
 import play.api.data.Form
 import play.api.data.Forms.mapping
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class ThreadReferenceFormProvider @Inject() extends ThreadReferenceMapping {
 
-  def apply(): Form[ThreadReference] = Form(
+  def apply(): Form[ThreadReferenceForm] = Form(
     mapping(
       "thread-reference" ->
         text("sdec.enterthreadref.error.enterref")
@@ -38,6 +38,6 @@ class ThreadReferenceFormProvider @Inject() extends ThreadReferenceMapping {
               )
             )
           )
-    )(ThreadReference.apply)(threadRef => Some(threadRef.reference))
+    )(ThreadReferenceForm.apply)(threadRef => Some(threadRef.reference))
   )
 }

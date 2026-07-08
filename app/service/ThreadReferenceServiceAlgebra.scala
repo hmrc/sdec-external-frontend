@@ -17,10 +17,13 @@
 package service
 
 import models.ThreadReference
+import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 trait ThreadReferenceServiceAlgebra {
 
-  def checkThreadReference(threadReference: String): Future[ThreadReference]
+  def checkThreadReference(
+      threadReference: String
+  )(using hc: HeaderCarrier, ec: ExecutionContext): Future[ThreadReference]
 }
