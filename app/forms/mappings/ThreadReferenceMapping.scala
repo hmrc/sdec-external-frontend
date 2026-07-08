@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package forms.mappings
 
-@this(
-        layout: templates.Layout,
-        govukButton: GovukButton
-)
+import forms.validators.Validation
 
-@()(implicit request: Request[_], messages: Messages)
+trait ThreadReferenceMapping extends Mappings {
 
-@layout(
-    pageTitle = titleNoForm(messages("index.title")),
-    showBackLink = false
-) {
-
-    <h1 class="govuk-heading-l">@messages("sdec.page.heading")</h1>
-
-    @govukButton(Button(
-        href = Some(routes.EnterThreadReferenceController.onPageLoad().url),
-        content = Text(messages("sdec.index.enterthread"))
-    ))
+  def validateThreadReference(threadReferenceNumber: String): Boolean =
+    threadReferenceNumber.matches(Validation.ThreadReferenceRegex)
 }

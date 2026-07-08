@@ -14,24 +14,25 @@
  * limitations under the License.
  *@
 
+@import forms.models.ThreadReference
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@this(
-        layout: templates.Layout,
-        govukButton: GovukButton
-)
+@this(layout: templates.Layout, govukSummaryList: GovukSummaryList)
 
-@()(implicit request: Request[_], messages: Messages)
-
+@(mode: Mode, threadReference: ThreadReference)(implicit request: Request[_], messages: Messages)
 @layout(
-    pageTitle = titleNoForm(messages("index.title")),
-    showBackLink = false
+    pageTitle = titleNoForm(messages("sdec.page.title")),
+    showBackLink = true
 ) {
 
-    <h1 class="govuk-heading-l">@messages("sdec.page.heading")</h1>
-
-    @govukButton(Button(
-        href = Some(routes.EnterThreadReferenceController.onPageLoad().url),
-        content = Text(messages("sdec.index.enterthread"))
+    @govukSummaryList(SummaryList(
+        rows = Seq(
+            SummaryListRow(
+                key = Key(content = Text(messages("sdec.threadinfopage.theadref"))),
+                value = Value(
+                    content = Text(threadReference.reference)
+                )
+            )
+        )
     ))
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package forms.models
 
-@this(
-        layout: templates.Layout,
-        govukButton: GovukButton
-)
+import play.api.data.Form
+import play.api.data.Forms.{mapping, text}
 
-@()(implicit request: Request[_], messages: Messages)
+case class ThreadReference(reference: String)
 
-@layout(
-    pageTitle = titleNoForm(messages("index.title")),
-    showBackLink = false
-) {
+object ThreadReference {
 
-    <h1 class="govuk-heading-l">@messages("sdec.page.heading")</h1>
-
-    @govukButton(Button(
-        href = Some(routes.EnterThreadReferenceController.onPageLoad().url),
-        content = Text(messages("sdec.index.enterthread"))
-    ))
+  val form: Form[ThreadReference] = Form(
+    mapping(
+      "thread-reference" -> text
+    )(ThreadReference.apply)(t => Some(t.reference))
+  )
 }
