@@ -27,10 +27,14 @@ import play.api.test.Helpers.*
 import service.ThreadReferenceServiceAlgebra
 import uk.gov.hmrc.http.{HeaderCarrier, NotFoundException, UpstreamErrorResponse}
 import views.html.EnterThreadReferenceView
+
 import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
 class EnterThreadReferenceControllerSpec extends SpecBase {
+
+  given HeaderCarrier    = HeaderCarrier()
+  given ExecutionContext = ExecutionContext.global
 
   "EnterThreadReferenceController" - {
 
@@ -116,8 +120,6 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
       }
 
       "must return OK when a valid thread reference is submitted" in {
-        given HeaderCarrier    = HeaderCarrier()
-        given ExecutionContext = ExecutionContext.global
 
         val threadReference = models.ThreadReference(
           id = "1",
@@ -170,9 +172,6 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
       }
 
       "must return NOTFOUND when a valid thread reference is submitted but backend does not find it in database" in {
-        given HeaderCarrier = HeaderCarrier()
-
-        given ExecutionContext = ExecutionContext.global
 
         val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
           override def checkThreadReference(threadReferenceStr: String)(using
@@ -215,9 +214,6 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
       }
 
       "must return NOTFOUND when a valid thread reference is submitted but gets an UpstreamErrorResponse" in {
-        given HeaderCarrier = HeaderCarrier()
-
-        given ExecutionContext = ExecutionContext.global
 
         val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
           override def checkThreadReference(threadReferenceStr: String)(using
@@ -267,9 +263,6 @@ class EnterThreadReferenceControllerSpec extends SpecBase {
       }
 
       "must return Server Error when a valid thread reference is submitted but gets an Any other errors" in {
-        given HeaderCarrier = HeaderCarrier()
-
-        given ExecutionContext = ExecutionContext.global
 
         val mockThreadReferenceService = new ThreadReferenceServiceAlgebra {
           override def checkThreadReference(threadReferenceStr: String)(using
