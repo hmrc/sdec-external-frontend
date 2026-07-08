@@ -57,3 +57,5 @@ sdec.enterthreadref.error.problem.message = There is a problem with the thread r
 
 sdec.threadinfopage.theadref = Thread Reference
 
+sdec.enterthreadref.api.notfound = The thread reference number was not found
+sdec.enterthreadref.api.error = There was a problem getting thread reference information

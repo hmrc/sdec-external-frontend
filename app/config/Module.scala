@@ -18,6 +18,7 @@ package config
 
 import com.google.inject.AbstractModule
 import controllers.actions.*
+import service.{ThreadReferenceService, ThreadReferenceServiceAlgebra}
 
 import java.time.{Clock, ZoneOffset}
 
@@ -38,5 +39,8 @@ class Module extends AbstractModule {
       .asEagerSingleton()
 
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
+    // All SDEC based services etc.
+    bind(classOf[ThreadReferenceServiceAlgebra])
+      .to(classOf[ThreadReferenceService])
   }
 }

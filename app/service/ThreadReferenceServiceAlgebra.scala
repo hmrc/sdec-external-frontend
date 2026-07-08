@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package forms.models
+package service
 
-import play.api.data.Form
-import play.api.data.Forms.{mapping, text}
+import models.ThreadReference
+import uk.gov.hmrc.http.HeaderCarrier
 
-case class ThreadReference(reference: String)
+import scala.concurrent.{ExecutionContext, Future}
 
-object ThreadReference {
+trait ThreadReferenceServiceAlgebra {
 
-  val form: Form[ThreadReference] = Form(
-    mapping(
-      "thread-reference" -> text
-    )(ThreadReference.apply)(t => Some(t.reference))
-  )
+  def checkThreadReference(
+      threadReference: String
+  )(using hc: HeaderCarrier, ec: ExecutionContext): Future[ThreadReference]
 }

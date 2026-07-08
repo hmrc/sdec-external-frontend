@@ -14,12 +14,12 @@
  * limitations under the License.
  *@
 
-@import forms.models.ThreadReference
+@import forms.models.ThreadReferenceForm
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @this(layout: templates.Layout, govukSummaryList: GovukSummaryList)
 
-@(mode: Mode, threadReference: ThreadReference)(implicit request: Request[_], messages: Messages)
+@(mode: Mode, threadReference: ThreadReferenceForm)(implicit request: Request[_], messages: Messages)
 @layout(
     pageTitle = titleNoForm(messages("sdec.page.title")),
     showBackLink = true
