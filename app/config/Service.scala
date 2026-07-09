@@ -25,6 +25,8 @@ final case class Service(host: String, port: String, protocol: String) {
   def baseUrl: String =
     s"$protocol://$host:$port"
 
+  def serviceUrl(service: String): String = s"$protocol://$host:$port/$service"
+
   override def toString: String =
     baseUrl
 }
