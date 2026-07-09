@@ -17,7 +17,7 @@
 @import forms.models.ThreadReferenceForm
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@this(layout: templates.Layout, govukSummaryList: GovukSummaryList)
+@this(layout: templates.Layout, govukSummaryList: GovukSummaryList, govukPanel: GovukPanel)
 
 @(mode: Mode, threadReference: ThreadReferenceForm)(implicit request: Request[_], messages: Messages)
 @layout(
@@ -25,14 +25,11 @@
     showBackLink = true
 ) {
 
-    @govukSummaryList(SummaryList(
-        rows = Seq(
-            SummaryListRow(
-                key = Key(content = Text(messages("sdec.threadinfopage.theadref"))),
-                value = Value(
-                    content = Text(threadReference.reference)
-                )
-            )
+    @govukPanel(
+        Panel(
+            title = Text("Development in progress"),
+            content = Text(threadReference.reference)
         )
-    ))
+    )
+
 }
