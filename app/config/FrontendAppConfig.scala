@@ -56,5 +56,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   // SDEC Backend URLS
   val threadInformationApi: String =
-    configuration.get[String]("urls.threadInformationApi")
+    configuration
+      .get[Service]("microservice.services.sdec-threadinfo-api")
+      .serviceUrl("sdec-threadinfo-api")
 }

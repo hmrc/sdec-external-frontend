@@ -38,7 +38,7 @@ class ThreadReferenceService @Inject (
       threadReference: String
   )(using hc: HeaderCarrier, ec: ExecutionContext): Future[ThreadReference] = {
     http
-      .get(url"$baseUrl$threadReference")
+      .get(url"$baseUrl/thread-reference/$threadReference")
       .execute[ThreadReference]
   }
 }
