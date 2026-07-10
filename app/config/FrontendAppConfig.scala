@@ -54,9 +54,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration) {
 
   val cacheTtl: Long = configuration.get[Int]("mongodb.timeToLiveInSeconds")
 
-  // SDEC Backend URLS
+  // SDEC URLS
   val threadInformationApi: String =
-    configuration
-      .get[Service]("microservice.services.sdec-threadinfo-api")
-      .serviceUrl("sdec-threadinfo-api")
+    s"${configuration.get[Service]("microservice.services.sdec-threadinfo-api").baseUrl}${configuration.get[String]("microservice.services.sdec-threadinfo-api.startUrl")}"
 }
