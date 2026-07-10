@@ -31,7 +31,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class ThreadReferenceService @Inject (
     appConfig: FrontendAppConfig,
     http: HttpClientV2
-) extends ThreadReferenceServiceAlgebra with Logging {
+) extends ThreadReferenceServiceAlgebra
+    with Logging {
 
   private val baseUrl = appConfig.threadInformationApi
 
