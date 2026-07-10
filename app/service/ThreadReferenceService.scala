@@ -19,6 +19,7 @@ package service
 import com.google.inject.Singleton
 import config.FrontendAppConfig
 import models.ThreadReference
+import play.api.Logging
 import uk.gov.hmrc.http.HttpReads.Implicits.readFromJson
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
@@ -30,15 +31,18 @@ import scala.concurrent.{ExecutionContext, Future}
 class ThreadReferenceService @Inject (
     appConfig: FrontendAppConfig,
     http: HttpClientV2
-) extends ThreadReferenceServiceAlgebra {
+) extends ThreadReferenceServiceAlgebra
+    with Logging {
 
   private val baseUrl = appConfig.threadInformationApi
 
   override def checkThreadReference(
       threadReference: String
   )(using hc: HeaderCarrier, ec: ExecutionContext): Future[ThreadReference] = {
+    val urlString = s"$baseUrl/thread-reference/$threadReference"
+    logger.info(s"ThreadReferenceService: GETting thread reference with $urlString")
     http
-      .get(url"$baseUrl/thread-reference/$threadReference")
+      .get(url"$urlString")
       .execute[ThreadReference]
   }
 }
