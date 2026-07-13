@@ -48,7 +48,7 @@
             ))
         ))
 
-        @if(form.hasErrors) {
+        @if(form("thread-reference").hasErrors) {
             @govukInput(Input(
                 id = "thread-reference",
                 name = "thread-reference",
