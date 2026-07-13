@@ -80,9 +80,10 @@ class EnterThreadReferenceController @Inject() (
         case _: NotFoundException =>
           val formWithError =
             form.withGlobalError(Messages("sdec.enterthreadref.api.notfound"))
-          logger.error(s"Thread Reference Not found: ${trForm.reference}")
+          logger.warn(s"Thread Reference Not found: ${trForm.reference}")
           NotFound(enterThreadReferenceView(formWithError, mode))
         case e: UpstreamErrorResponse if e.statusCode == HttpStatus.NOT_FOUND =>
+          logger.warn(s"Thread Reference Not found: ${trForm.reference}")
           val formWithError =
             form.withGlobalError(Messages("sdec.enterthreadref.api.notfound"))
           NotFound(enterThreadReferenceView(formWithError, mode))
@@ -96,6 +97,7 @@ class EnterThreadReferenceController @Inject() (
   private def returnBadRequest(form: Form[ThreadReferenceForm], mode: Mode)(using
       request: Request[?]
   ): Result = {
+    logger.warn(s"Returning bad request for ${form.value}")
     val formWithError =
       form.withGlobalError(Messages("sdec.enterthreadref.error.problem.message"))
     BadRequest(enterThreadReferenceView(formWithError, mode))
