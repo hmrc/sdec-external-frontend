@@ -39,7 +39,7 @@ lazy val microservice = (project in file("."))
     PlayKeys.playDefaultPort := 4002,
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:cat=deprecation:ws,cat=feature:ws,cat=optimizer:ws,src=target/.*:s"
+      "-Wconf:cat=deprecation:w,cat=feature:w,src=target/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
@@ -70,18 +70,11 @@ lazy val it =
 
 inThisBuild(
   List(
-    semanticdbEnabled := true,
-    semanticdbVersion := scalafixSemanticdb.revision
+    semanticdbEnabled := true
   )
 )
 
-addCommandAlias(
-  "prePrChecks",
-  "; scalafmtCheckAll; scalafmtSbtCheck; scalafixAll --check"
-)
-addCommandAlias(
-  "checkCodeCoverage",
-  "; clean; coverage; test; it/test; coverageReport"
-)
-addCommandAlias("lint", "; scalafmtAll; scalafmtSbt; scalafixAll")
+addCommandAlias("prePrChecks", "; scalafmtCheckAll; it/scalafmtCheckAll; scalafmtSbtCheck; scalafixAll --check; it/scalafixAll --check")
+addCommandAlias("checkCodeCoverage", "; clean; coverage; test; it/test; coverageReport")
+addCommandAlias("lint", "; scalafmtAll; it/scalafmtAll; scalafmtSbt; it/scalafixAll; scalafixAll")
 addCommandAlias("prePush", "; reload; clean; compile; test; it/test; lint;")
