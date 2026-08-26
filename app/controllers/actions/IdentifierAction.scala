@@ -29,13 +29,15 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+trait IdentifierAction
+    extends ActionBuilder[IdentifierRequest, AnyContent]
+    with ActionFunction[Request, IdentifierRequest]
 
 class AuthenticatedIdentifierAction @Inject() (
   override val authConnector: AuthConnector,
   config:                     FrontendAppConfig,
   val parser:                 BodyParsers.Default
-)(implicit val executionContext: ExecutionContext)
+)(using val executionContext: ExecutionContext)
     extends IdentifierAction
     with AuthorisedFunctions {
 
@@ -44,7 +46,7 @@ class AuthenticatedIdentifierAction @Inject() (
     block:   IdentifierRequest[A] => Future[Result]
   ): Future[Result] = {
 
-    implicit val hc: HeaderCarrier =
+    given hc: HeaderCarrier =
       HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     authorised().retrieve(Retrievals.internalId) {
@@ -62,7 +64,7 @@ class AuthenticatedIdentifierAction @Inject() (
 
 class SessionIdentifierAction @Inject() (
   val parser: BodyParsers.Default
-)(implicit val executionContext: ExecutionContext)
+)(using val executionContext: ExecutionContext)
     extends IdentifierAction {
 
   override def invokeBlock[A](
@@ -70,7 +72,7 @@ class SessionIdentifierAction @Inject() (
     block:   IdentifierRequest[A] => Future[Result]
   ): Future[Result] = {
 
-    implicit val hc: HeaderCarrier =
+    given hc: HeaderCarrier =
       HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     hc.sessionId match {

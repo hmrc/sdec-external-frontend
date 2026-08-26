@@ -50,12 +50,15 @@ class EnterThreadReferenceController @Inject() (
   def onPageLoad(
     mode:                Mode,
     threadReferenceForm: Form[ThreadReferenceForm] = form
-  ): Action[AnyContent] = identify { implicit request =>
+  ): Action[AnyContent] = identify { request =>
+    given Request[AnyContent] = request
     Ok(enterThreadReferenceView(threadReferenceForm, mode))
   }
 
   def onContinue(mode: Mode): Action[AnyContent] =
-    identify.async { implicit request =>
+    identify.async { request =>
+      given Request[AnyContent] = request
+
       val formData = form.bindFromRequest()
       formData.value
         .filter(t => formProvider.validateThreadReference(t.reference))
