@@ -28,9 +28,15 @@ import play.api.test.Helpers.stubMessages
 
 import java.time.LocalDate
 
-class DateMappingsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with Generators with OptionValues with Mappings {
+class DateMappingsSpec
+    extends AnyFreeSpec
+    with Matchers
+    with ScalaCheckPropertyChecks
+    with Generators
+    with OptionValues
+    with Mappings {
 
-  private implicit val messages: Messages = stubMessages()
+  private given messages: Messages = stubMessages()
 
   val form: Form[LocalDate] = Form(
     "value" -> localDate(

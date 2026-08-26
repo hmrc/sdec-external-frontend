@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ErrorHandler @Inject() (
   val messagesApi: MessagesApi,
   view:            ErrorTemplate
-)(override implicit val ec: ExecutionContext)
+)(using override val ec: ExecutionContext)
     extends FrontendErrorHandler
     with I18nSupport {
 
@@ -37,6 +37,6 @@ class ErrorHandler @Inject() (
     pageTitle: String,
     heading:   String,
     message:   String
-  )(implicit rh: RequestHeader): Future[Html] =
+  )(using rh: RequestHeader): Future[Html] =
     Future.successful(view(pageTitle, heading, message))
 }

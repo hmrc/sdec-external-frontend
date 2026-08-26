@@ -19,7 +19,7 @@
 
 @this(layout: templates.Layout, govukSummaryList: GovukSummaryList, govukPanel: GovukPanel)
 
-@(mode: Mode, threadReference: ThreadReferenceForm)(implicit request: Request[_], messages: Messages)
+@(mode: Mode, threadReference: ThreadReferenceForm)(implicit request: Request[?], messages: Messages)
 @layout(
     pageTitle = titleNoForm(messages("sdec.page.title")),
     showBackLink = true

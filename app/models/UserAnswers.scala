@@ -29,10 +29,10 @@ final case class UserAnswers(
   lastUpdated: Instant = Instant.now
 ) {
 
-  def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
+  def get[A](page: Gettable[A])(using rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
 
-  def set[A](page: Settable[A], value: A)(implicit
+  def set[A](page: Settable[A], value: A)(using
     writes: Writes[A]
   ): Try[UserAnswers] = {
 
@@ -89,5 +89,5 @@ object UserAnswers {
     )(ua => (ua.id, ua.data, ua.lastUpdated))
   }
 
-  implicit val format: OFormat[UserAnswers] = OFormat(reads, writes)
+  given format: OFormat[UserAnswers] = OFormat(reads, writes)
 }

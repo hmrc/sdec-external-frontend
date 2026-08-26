@@ -31,5 +31,5 @@ case class ThreadReference(
 )
 
 object ThreadReference {
-  implicit val format: Format[ThreadReference] = Json.format[ThreadReference]
+  given format: Format[ThreadReference] = Json.format[ThreadReference]
 }

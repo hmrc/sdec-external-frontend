@@ -24,7 +24,7 @@ import java.time.{Instant, LocalDate, ZoneOffset}
 
 trait Generators extends ModelGenerators {
 
-  implicit val dontShrink: Shrink[String] = Shrink.shrinkAny
+  given dontShrink: Shrink[String] = Shrink.shrinkAny
 
   def genIntersperseString(
     gen:        Gen[String],

@@ -36,7 +36,7 @@ class SessionRepository @Inject() (
   mongoComponent: MongoComponent,
   appConfig:      FrontendAppConfig,
   clock:          Clock
-)(implicit ec: ExecutionContext)
+)(using ec: ExecutionContext)
     extends PlayMongoRepository[UserAnswers](
       collectionName = "user-answers",
       mongoComponent = mongoComponent,
@@ -51,7 +51,7 @@ class SessionRepository @Inject() (
       )
     ) {
 
-  implicit val instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
+  given instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
 
   private def byId(id: String): Bson = Filters.equal("_id", id)
 
