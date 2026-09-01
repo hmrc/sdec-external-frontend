@@ -2,10 +2,10 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "10.7.0"
-  private val hmrcMongoVersion = "2.12.0"
-  private val hmrcPlayFrontend = "12.32.1"
-  private val scalaCheckVersion  = "3.2.17.0"
+  private val bootstrapVersion  = "10.7.0"
+  private val hmrcMongoVersion  = "2.12.0"
+  private val hmrcPlayFrontend  = "12.32.1"
+  private val scalaCheckVersion = "3.2.17.0"
 
   val compile: Seq[ModuleID] = Seq(
     play.sbt.PlayImport.ws,
