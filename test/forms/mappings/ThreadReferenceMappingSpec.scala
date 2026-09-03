@@ -22,27 +22,21 @@ import org.scalatest.matchers.should.Matchers
 class ThreadReferenceMappingSpec extends AnyFlatSpec with Matchers {
   private val sut = new ThreadReferenceMapping {}
 
-  it should "return false for empty string" in {
+  it should "return false for empty string" in
     assert(sut.validateThreadReference("") === false)
-  }
 
-  it should "return false for any string less than 12 characters" in {
+  it should "return false for any string less than 12 characters" in
     assert(sut.validateThreadReference("ABC123") === false)
-  }
 
-  it should "return false for any string more than 12 characters" in {
+  it should "return false for any string more than 12 characters" in
     assert(sut.validateThreadReference("ABC1235678901") === false)
-  }
 
-  it should "return false for any string with 12 characters but containing lower case" in {
+  it should "return false for any string with 12 characters but containing lower case" in
     assert(sut.validateThreadReference("aBC123456789") === false)
-  }
 
-  it should "return false for any string with 12 characters but containing unsupported characters" in {
+  it should "return false for any string with 12 characters but containing unsupported characters" in
     assert(sut.validateThreadReference("=BC123456789") === false)
-  }
 
-  it should "return true for any string with 12 characters" in {
+  it should "return true for any string with 12 characters" in
     assert(sut.validateThreadReference("ABC123456789") === true)
-  }
 }

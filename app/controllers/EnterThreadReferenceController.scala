@@ -34,12 +34,12 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EnterThreadReferenceController @Inject() (
-    val controllerComponents: MessagesControllerComponents,
-    identify: IdentifierAction,
-    enterThreadReferenceView: EnterThreadReferenceView,
-    formProvider: ThreadReferenceFormProvider,
-    threadReferenceView: ThreadReferenceView,
-    threadReferenceService: ThreadReferenceServiceAlgebra
+  val controllerComponents: MessagesControllerComponents,
+  identify:                 IdentifierAction,
+  enterThreadReferenceView: EnterThreadReferenceView,
+  formProvider:             ThreadReferenceFormProvider,
+  threadReferenceView:      ThreadReferenceView,
+  threadReferenceService:   ThreadReferenceServiceAlgebra
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -48,14 +48,17 @@ class EnterThreadReferenceController @Inject() (
   private val form: Form[ThreadReferenceForm] = formProvider()
 
   def onPageLoad(
-      mode: Mode,
-      threadReferenceForm: Form[ThreadReferenceForm] = form
-  ): Action[AnyContent] = identify { implicit request =>
+    mode:                Mode,
+    threadReferenceForm: Form[ThreadReferenceForm] = form
+  ): Action[AnyContent] = identify { request =>
+    given Request[AnyContent] = request
     Ok(enterThreadReferenceView(threadReferenceForm, mode))
   }
 
   def onContinue(mode: Mode): Action[AnyContent] =
-    identify.async { implicit request =>
+    identify.async { request =>
+      given Request[AnyContent] = request
+
       val formData = form.bindFromRequest()
       formData.value
         .filter(t => formProvider.validateThreadReference(t.reference))
@@ -67,9 +70,9 @@ class EnterThreadReferenceController @Inject() (
     }
 
   private def getThreadInformation(
-      form: Form[ThreadReferenceForm],
-      mode: Mode,
-      trForm: ThreadReferenceForm
+    form:   Form[ThreadReferenceForm],
+    mode:   Mode,
+    trForm: ThreadReferenceForm
   )(using Request[?]): Future[Result] =
     threadReferenceService
       .checkThreadReference(trForm.reference)
@@ -95,7 +98,7 @@ class EnterThreadReferenceController @Inject() (
       }
 
   private def returnBadRequest(form: Form[ThreadReferenceForm], mode: Mode)(using
-      request: Request[?]
+    request: Request[?]
   ): Result = {
     logger.warn(s"Returning bad request for ${form.value}")
     val formWithError =

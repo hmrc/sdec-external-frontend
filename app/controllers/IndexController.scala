@@ -15,22 +15,25 @@
  */
 
 package controllers
+
 import controllers.actions.IdentifierAction
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.*
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.IndexView
 
 import javax.inject.Inject
 
 class IndexController @Inject() (
-    val controllerComponents: MessagesControllerComponents,
-    identity: IdentifierAction,
-    indexView: IndexView
+  val controllerComponents: MessagesControllerComponents,
+  identity:                 IdentifierAction,
+  indexView:                IndexView
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identity { implicit request =>
+  def onPageLoad: Action[AnyContent] = identity { request =>
+    given Request[AnyContent] = request
+
     Ok(indexView())
   }
 }

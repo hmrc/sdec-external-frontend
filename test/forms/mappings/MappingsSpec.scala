@@ -32,18 +32,14 @@ object MappingsSpec {
 
     val values: Set[Foo] = Set(Bar, Baz)
 
-    implicit val fooEnumerable: Enumerable[Foo] =
-      Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    given fooEnumerable: Enumerable[Foo] =
+      Enumerable(values.toSeq.map(v => v.toString -> v)*)
   }
 }
 
-class MappingsSpec
-    extends AnyFreeSpec
-    with Matchers
-    with OptionValues
-    with Mappings {
+class MappingsSpec extends AnyFreeSpec with Matchers with OptionValues with Mappings {
 
-  import MappingsSpec._
+  import MappingsSpec.*
 
   "text" - {
 

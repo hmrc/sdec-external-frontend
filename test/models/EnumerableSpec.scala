@@ -31,24 +31,19 @@ object EnumerableSpec {
 
     val values: Set[Foo] = Set(Bar, Baz)
 
-    implicit val fooEnumerable: Enumerable[Foo] =
-      Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    given fooEnumerable: Enumerable[Foo] =
+      Enumerable(values.toSeq.map(v => v.toString -> v)*)
   }
 }
 
-class EnumerableSpec
-    extends AnyFreeSpec
-    with Matchers
-    with EitherValues
-    with OptionValues
-    with Enumerable.Implicits {
+class EnumerableSpec extends AnyFreeSpec with Matchers with EitherValues with OptionValues with Enumerable.Implicits {
 
-  import EnumerableSpec._
+  import EnumerableSpec.*
 
   ".reads" - {
 
     "must be found implicitly" in {
-      implicitly[Reads[Foo]]
+      summon[Reads[Foo]]
     }
 
     Foo.values.foreach { value =>
@@ -67,7 +62,7 @@ class EnumerableSpec
   ".writes" - {
 
     "must be found implicitly" in {
-      implicitly[Writes[Foo]]
+      summon[Writes[Foo]]
     }
 
     Foo.values.foreach { value =>
@@ -80,7 +75,7 @@ class EnumerableSpec
   ".formats" - {
 
     "must be found implicitly" in {
-      implicitly[Format[Foo]]
+      summon[Format[Foo]]
     }
   }
 }

@@ -34,19 +34,19 @@ trait IdentifierAction
     with ActionFunction[Request, IdentifierRequest]
 
 class AuthenticatedIdentifierAction @Inject() (
-    override val authConnector: AuthConnector,
-    config: FrontendAppConfig,
-    val parser: BodyParsers.Default
-)(implicit val executionContext: ExecutionContext)
+  override val authConnector: AuthConnector,
+  config:                     FrontendAppConfig,
+  val parser:                 BodyParsers.Default
+)(using val executionContext: ExecutionContext)
     extends IdentifierAction
     with AuthorisedFunctions {
 
   override def invokeBlock[A](
-      request: Request[A],
-      block: IdentifierRequest[A] => Future[Result]
+    request: Request[A],
+    block:   IdentifierRequest[A] => Future[Result]
   ): Future[Result] = {
 
-    implicit val hc: HeaderCarrier =
+    given hc: HeaderCarrier =
       HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     authorised().retrieve(Retrievals.internalId) {
@@ -63,16 +63,16 @@ class AuthenticatedIdentifierAction @Inject() (
 }
 
 class SessionIdentifierAction @Inject() (
-    val parser: BodyParsers.Default
-)(implicit val executionContext: ExecutionContext)
+  val parser: BodyParsers.Default
+)(using val executionContext: ExecutionContext)
     extends IdentifierAction {
 
   override def invokeBlock[A](
-      request: Request[A],
-      block: IdentifierRequest[A] => Future[Result]
+    request: Request[A],
+    block:   IdentifierRequest[A] => Future[Result]
   ): Future[Result] = {
 
-    implicit val hc: HeaderCarrier =
+    given hc: HeaderCarrier =
       HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     hc.sessionId match {

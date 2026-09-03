@@ -30,11 +30,7 @@ import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
 import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.{ExecutionContext, Future}
 
-class ThreadReferenceServiceSpec
-    extends AnyWordSpec
-    with Matchers
-    with MockitoSugar
-    with ScalaFutures {
+class ThreadReferenceServiceSpec extends AnyWordSpec with Matchers with MockitoSugar with ScalaFutures {
 
   given HeaderCarrier    = HeaderCarrier()
   given ExecutionContext = ExecutionContext.global

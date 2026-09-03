@@ -31,39 +31,39 @@ trait Constraints {
         .getOrElse(Valid)
     }
 
-  protected def minimumValue[A](minimum: A, errorKey: String)(implicit
-      ev: Ordering[A]
+  protected def minimumValue[A](minimum: A, errorKey: String)(using
+    ev: Ordering[A]
   ): Constraint[A] =
     Constraint { input =>
-      import ev._
+      import ev.*
 
-      if (input >= minimum) {
+      if input >= minimum then {
         Valid
       } else {
         Invalid(errorKey, minimum)
       }
     }
 
-  protected def maximumValue[A](maximum: A, errorKey: String)(implicit
-      ev: Ordering[A]
+  protected def maximumValue[A](maximum: A, errorKey: String)(using
+    ev: Ordering[A]
   ): Constraint[A] =
     Constraint { input =>
-      import ev._
+      import ev.*
 
-      if (input <= maximum) {
+      if input <= maximum then {
         Valid
       } else {
         Invalid(errorKey, maximum)
       }
     }
 
-  protected def inRange[A](minimum: A, maximum: A, errorKey: String)(implicit
-      ev: Ordering[A]
+  protected def inRange[A](minimum: A, maximum: A, errorKey: String)(using
+    ev: Ordering[A]
   ): Constraint[A] =
     Constraint { input =>
-      import ev._
+      import ev.*
 
-      if (input >= minimum && input <= maximum) {
+      if input >= minimum && input <= maximum then {
         Valid
       } else {
         Invalid(errorKey, minimum, maximum)
@@ -87,30 +87,30 @@ trait Constraints {
     }
 
   protected def maxDate(
-      maximum: LocalDate,
-      errorKey: String,
-      args: Any*
+    maximum:  LocalDate,
+    errorKey: String,
+    args:     Any*
   ): Constraint[LocalDate] =
     Constraint {
       case date if date.isAfter(maximum) =>
-        Invalid(errorKey, args: _*)
+        Invalid(errorKey, args*)
       case _ =>
         Valid
     }
 
   protected def minDate(
-      minimum: LocalDate,
-      errorKey: String,
-      args: Any*
+    minimum:  LocalDate,
+    errorKey: String,
+    args:     Any*
   ): Constraint[LocalDate] =
     Constraint {
       case date if date.isBefore(minimum) =>
-        Invalid(errorKey, args: _*)
+        Invalid(errorKey, args*)
       case _ =>
         Valid
     }
 
-  protected def nonEmptySet(errorKey: String): Constraint[Set[_]] =
+  protected def nonEmptySet(errorKey: String): Constraint[Set[?]] =
     Constraint {
       case set if set.nonEmpty =>
         Valid
@@ -118,22 +118,22 @@ trait Constraints {
         Invalid(errorKey)
     }
 
-  protected def minimumCurrency(minimum: BigDecimal, errorKey: String)(implicit
-      ev: Ordering[BigDecimal]
+  protected def minimumCurrency(minimum: BigDecimal, errorKey: String)(using
+    ev: Ordering[BigDecimal]
   ): Constraint[BigDecimal] =
     Constraint { input =>
-      if (input >= minimum) {
+      if input >= minimum then {
         Valid
       } else {
         Invalid(errorKey, CurrencyFormatter.currencyFormat(minimum))
       }
     }
 
-  protected def maximumCurrency(maximum: BigDecimal, errorKey: String)(implicit
-      ev: Ordering[BigDecimal]
+  protected def maximumCurrency(maximum: BigDecimal, errorKey: String)(using
+    ev: Ordering[BigDecimal]
   ): Constraint[BigDecimal] =
     Constraint { input =>
-      if (input <= maximum) {
+      if input <= maximum then {
         Valid
       } else {
         Invalid(errorKey, CurrencyFormatter.currencyFormat(maximum))
