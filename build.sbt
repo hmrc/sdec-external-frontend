@@ -7,12 +7,6 @@ lazy val appName: String = "sdec-external-frontend"
 ThisBuild / majorVersion := 0
 ThisBuild / scalaVersion := "3.3.7"
 
-lazy val commonSettings = Seq(
-  scalacOptions += "-Wconf:src=routes/.*:s",
-  scalacOptions += "-Wconf:msg=unused import&src=html/.*:s",
-  scalacOptions += "-Wconf:msg=Flag.*repeatedly:s"
-)
-
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin)
@@ -39,7 +33,9 @@ lazy val microservice = (project in file("."))
     PlayKeys.playDefaultPort := 4002,
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:cat=deprecation:w,cat=feature:w,src=target/.*:s"
+      "-Wconf:src=routes/.*:s",
+      "-Wconf:msg=unused import&src=html/.*:s",
+      "-Wconf:msg=Flag.*repeatedly:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
@@ -52,9 +48,7 @@ lazy val microservice = (project in file("."))
     Test / unmanagedResourceDirectories := Seq(
       baseDirectory.value / "test-resources"
     ),
-    Test / unmanagedSourceDirectories += baseDirectory.value / "test-utils",
-
-    commonSettings
+    Test / unmanagedSourceDirectories += baseDirectory.value / "test-utils"
   )
   .settings(CodeCoverageSettings.settings: _*)
 
@@ -74,10 +68,9 @@ inThisBuild(
   )
 )
 
-addCommandAlias(
-  "prePrChecks",
-  "; scalafmtCheckAll; it/scalafmtCheckAll; scalafmtSbtCheck; scalafixAll --check; it/scalafixAll --check"
-)
+// @formatter:off
+addCommandAlias("prePrChecks", "; scalafmtCheckAll; it/scalafmtCheckAll; scalafmtSbtCheck; scalafixAll --check; it/scalafixAll --check")
 addCommandAlias("checkCodeCoverage", "; clean; coverage; test; it/test; coverageReport")
 addCommandAlias("lint", "; scalafmtAll; it/scalafmtAll; scalafmtSbt; it/scalafixAll; scalafixAll")
 addCommandAlias("prePush", "; reload; clean; compile; test; it/test; lint;")
+// @formatter:on
